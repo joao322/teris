@@ -1,61 +1,113 @@
 
+from random import choice
 import customtkinter as ctk
 
 
 class janela(ctk.CTk):
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         global canvas
-        self.title('calculadora')
+        self.title('tetris')
         self.rotacao = 0
-        linha = list(0 for i in range(0, 40))
-        self.grade = [linha.copy()  for i in range(0, 20)] 
-        
-        # o = obijeto codigo apenas numero par, p = pos x 0 y 0
-        self.obigeto_i = [['o2p00', 'o2p01', 'o2p02', 'o2p03']]
-        self.obigeto_j = [['o4p10', 'o4p11', '04p12', '04p02']]
-        self.obigeto_l = [['o6p00', 'o6p01', '06p02', '06p12']]
-        self.obigeto_o = [['o8p00', 'o8p01', 'o8p10', 'o8p11']]
-        '''self.obigeto_s
-        self.obigeto_t
-        self.obigeto_z'''
+        self.play_pos = list()
+        # o = obijeto numero igual a cor, p = pos x 0 y 0
+        self.obigeto = {'i': [['o2p00', 'o2p01', 'o2p02', 'o2p03']],
+                        'j': [['o4p10', 'o4p11', 'o4p12', 'o4p02']],
+                        'l': [['o6p00', 'o6p01', 'o6p02', 'o6p12']],
+                        'o': [['o8p00', 'o8p01', 'o8p10', 'o08p11']],
+                        's': [['o10p10', 'o10p20', 'o10p01', 'o10p11']],
+                        't': [['o12p00', 'o12p10', 'o12p11', 'o12p20']],
+                        'z': [['o14p00', 'o14p10', 'o14p11', 'o14p21']]
+                        }
 
-
-
-        self.y = 0
         canvas = ctk.CTkCanvas(self, width=200, height=400, bg='black')
         canvas.grid()
-        self.add_obigeto()
 
-        self.after(1000//5, self.update)
-        
+        self.grade = [list(0 for i in range(0, 40)) for i in range(0, 20)]
+        self.novo_bloco(False)
+        self.bind("<Key>", self.inputs)
+        self.after(1000 // 5, self.update)
+
+    def inputs(self, key):
+
+        if key.keycode == 114:
+
+            self.grade[self.play_pos_x[0]][self.play_pos_y[0]] = 0
+            self.grade[self.play_pos_x[0] + 1 if self.play_pos_x[-1] < len(self.grade)-1
+                       else self.play_pos_x[-1]][self.play_pos_y[0]] = 9
+
+        elif key.keycode == 113:
+
+            self.grade[self.play_pos_x[0]][self.play_pos_y[0]] = 0
+            self.grade[self.play_pos_x[0] - 1 if self.play_pos_x[0]
+                       > 0 else self.play_pos_x[0]][self.play_pos_y[0]] = 9
+
+    def cair_bloco(self):
+        contagem = 0
+        if all(y < len(self.grade[0]) - 1 for x, y in self.play_pos):
+
+            for pos_x, coluna in enumerate(self.grade):
+                for pos_y, bloco in enumerate(coluna):
+                    if bloco == 9:
+                        contagem += 1
+                        self.grade[pos_x][pos_y] = 0
+
+                    elif contagem >= 4:
+                        break
+
+                if contagem >= 4:
+                    break
+
+            for o in self.obigeto[self.celecionado][self.rotacao]:
+                self.grade[int(o[-2]) + self.play_pos[0][0]
+                           ][self.play_pos[0][1] + int(o[-1]) + 1] = 9
+        else:
+            pass
+
     def update(self):
-        n1 = 200 / len(self.grade)
-        n2 = 400 / len(self.grade[-1])
 
         canvas.delete('o')
-        self.inicio = 0
-        self.inicio_x = 0
-        if self.y + int(self.obigeto_i[0][-1][-1]) * 10 + 10 < 400:
-            self.y += 1
+        self.play_pos.clear()
+
         for pos_x, i in enumerate(self.grade):
-            for pos, e in enumerate(i):
-                if e == 'p':
-                    self.inicio = pos
-                    self.inicio_x = pos_x
-                    break
-            if self.inicio > 0:
-                break
-        
-        for obijeto in self.obigeto_i[self.rotacao]:
-            
-            canvas.create_rectangle((self.inicio_x + int(obijeto[-2])) * n1, (self.inicio + int(obijeto[-1])) * n1  + self.y, (self.inicio_x + int(obijeto[-2])) * n1 + n1, (self.inicio + int(obijeto[-1])) * n1 + self.y + n1, fill='red', tags='o')
+
+            for pos_y, e in enumerate(i):
+                if e == 9:
+                    self.play_pos.append([pos_x, pos_y])
+                    self.play_pos.sort()
+        self.cair_bloco()
+        for x, y in self.play_pos:
+
+            x *= 10
+            y *= 10
+
+            canvas.create_rectangle(x, y, x + 10, y + 10, fill='red', tags='o')
 
         self.after(1000//60, self.update)
-    def add_obigeto(self):
-        self.grade[10].pop(0)
-        self.grade[10].insert(0, 'p') 
-        
+
+    def novo_bloco(self, ja_iniciado=True):
+        contagem = 0
+        if ja_iniciado:
+            for pos_x, coluna in enumerate(self.grade):
+                for pos_y, bloco in enumerate(coluna):
+                    if bloco == 9:
+                        contagem += 1
+                        self.grade[pos_x][pos_y] = 0
+
+                    elif contagem >= 4:
+                        break
+
+                if contagem >= 4:
+                    break
+        self.celecionado = ''
+        for letra in self.obigeto.keys():
+            self.celecionado += letra
+
+        self.celecionado = choice(self.celecionado)
+        for o in self.obigeto[self.celecionado][self.rotacao]:
+            self.grade[10 + int(o[-2])][int(o[-1])] = 9
+
 
 if __name__ == "__main__":
     janela().mainloop()

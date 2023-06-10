@@ -1,0 +1,28 @@
+criar todos os modelos
+
+emprementar a fisica dos obigetos
+
+fazer os obigetos se moverem para esquerda e direita
+
+fazer eles decer mais rapido 
+
+fazer ele muda a orientacao
+
+fazer ele para quando colidri com o chao ou outos blocos
+
+fazer os blocos fica parado e criar um novo
+
+detectar quando uma linha estiver completa
+
+detectar quando nao a mais espaco
+
+---------Teris areia----------
+obigeto cair normal mente
+
+quando colidi com cao ou comtros obigetos ele vira areia[]
+    areia deve rola para os dois lado casso nao aja obistaculo areia 
+    deve anda apenas dobre ela mesmo,  
+
+detectar quando o areia cegar de uma ponta a outra, obs: areia deve ser da mesma comtros
+
+
