@@ -1,12 +1,12 @@
-criar todos os modelos []
+criar todos os modelos [ja]
 
 emprementar a fisica dos obigetos [ja]
 
 fazer os obigetos se moverem para esquerda e direita [ja]
 
-fazer eles decer mais rapido 
+fazer eles decer mais rapido [ja]
 
-fazer ele muda a orientacao
+fazer ele muda a orientacao []
 
 fazer ele para quando colidri com o chao ou outos blocos
 

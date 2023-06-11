@@ -11,13 +11,13 @@ class janela(ctk.CTk):
         self.play_pos = list()
         self.poder_cair = 6
         # o = obijeto numero igual a cor, p = pos x 0 y 0
-        self.obigeto = {'i': [['o2p00', 'o2p01', 'o2p02', 'o2p03']],
-                        'j': [['o4p10', 'o4p11', 'o4p12', 'o4p02']],
-                        'l': [['o6p00', 'o6p01', 'o6p02', 'o6p12']],
+        self.obigeto = {'i': [['o2p00', 'o2p01', 'o2p02', 'o2p03'], [['o2p00', 'o2p10', 'o2p20', 'o2p30']]],
+                        'j': [['o4p10', 'o4p11', 'o4p12', 'o4p02'], ['o4p00', 'o4p01', 'o4p11', 'o4p12'], ['o4p00', 'o4p10', 'o4p02', 'o4p03'], ['o4p00', 'o4p10', 'o4p20', 'o4p21']],
+                        'l': [['o6p00', 'o6p01', 'o6p02', 'o6p12'], ['o6p01', 'o6p00', 'o6p10', 'o6p20'], ['o6p00', 'o6p10', 'o6p11', 'o6p12'], ['o6p20', 'o6p21', 'o6p01', 'o6p11']],
                         'o': [['o8p00', 'o8p01', 'o8p10', 'o08p11']],
-                        's': [['o10p10', 'o10p20', 'o10p01', 'o10p11']],
-                        't': [['o12p00', 'o12p10', 'o12p11', 'o12p20']],
-                        'z': [['o14p00', 'o14p10', 'o14p11', 'o14p21']]
+                        's': [['o10p10', 'o10p20', 'o10p01', 'o10p11'], ['o10p00', 'o10p01', 'o10p11', 'o10p12']],
+                        't': [['o12p00', 'o12p10', 'o12p11', 'o12p20'], ['o12p01', 'o12p10', 'o12p11', 'o12p12'], ['o12p01', 'o12p11', 'o12p10', 'o12p21'], ['o12p00', 'o12p01', 'o12p11', 'o12p02']],
+                        'z': [['o14p00', 'o14p10', 'o14p11', 'o14p21'], ['o14p10', 'o14p11', 'o14p01', 'o14p02']]
                         }
 
         canvas = ctk.CTkCanvas(self, width=200, height=400, bg='black')
@@ -29,7 +29,7 @@ class janela(ctk.CTk):
         self.after(2000 // 5, self.update)
 
     def inputs(self, key):
-        
+        print(key.keycode)
         if key.keycode == 114 and all(x < len(self.grade) - 1 for x, y in self.play_pos):
             self.limpar_tela()
             for o in self.obigeto[self.celecionado][self.rotacao]:
@@ -40,7 +40,9 @@ class janela(ctk.CTk):
             for o in self.obigeto[self.celecionado][self.rotacao]:
                 self.grade[int(o[-2]) + self.play_pos[0][0] - 1
                            ][self.play_pos[0][1] + int(o[-1])] = 9
-
+        elif key.keycode == 116:
+            self.poder_cair = 0
+            self.cair_bloco()
     def cair_bloco(self):
         
         if all(y < len(self.grade[0]) - 1 for x, y in self.play_pos):
