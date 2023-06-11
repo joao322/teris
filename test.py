@@ -1,2 +1,2 @@
-for i, n in ('x','n'):
-    print(i,n)
+if all(1 > n for n in range(2,8)):
+    print('e')
