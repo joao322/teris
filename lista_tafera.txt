@@ -6,9 +6,9 @@ fazer os obigetos se moverem para esquerda e direita [ja]
 
 fazer eles decer mais rapido [ja]
 
-fazer ele muda a orientacao []
+fazer ele muda a orientacao [ja]
 
-fazer ele para quando colidri com o chao ou outos blocos
+fazer ele para quando colidri com o chao ou outos blocos [ja]
 
 fazer os blocos fica parado e criar um novo
 
