@@ -1,3 +1,2 @@
-n1 = 0
-if n1 == 2 or 0 or 1:
-    print('e', n1)
+for menos in range(0, 10, -1):
+    print(menos)

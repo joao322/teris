@@ -10,9 +10,9 @@ fazer ele muda a orientacao [ja]
 
 fazer ele para quando colidri com o chao ou outos blocos [ja]
 
-fazer os blocos fica parado e criar um novo
+fazer os blocos fica parado e criar um novo[ja]
 
-detectar quando uma linha estiver completa
+detectar quando uma linha estiver completa[ja]
 
 detectar quando nao a mais espaco
 
