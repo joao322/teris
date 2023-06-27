@@ -14,15 +14,14 @@ fazer os blocos fica parado e criar um novo[ja]
 
 detectar quando uma linha estiver completa[ja]
 
-detectar quando nao a mais espaco
+detectar quando nao a mais espaco[ja]
 
----------Teris areia----------
-obigeto cair normal mente
+reboot quando for ativado a tela deve fica roxa e as variaveis fica nova
 
-quando colidi com cao ou comtros obigetos ele vira areia[]
-    areia deve rola para os dois lado casso nao aja obistaculo areia 
-    deve anda apenas dobre ela mesmo,  
+cria um banco de de dado que cotem a pontucao maxima
+ 
+polir o game 
 
-detectar quando o areia cegar de uma ponta a outra, obs: areia deve ser da mesma comtros
+logica demostra o proximo blocos
 
 

@@ -1,21 +1,31 @@
 from random import choice
+
 import customtkinter as ctk
 
+janela = ctk.CTk()
+frame = ctk.CTkFrame(janela)
+frame.pack()
 
-class janela(ctk.CTk):
+
+class Game():
+    
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         global canvas
-        self.title('tetris')
+        
         self.rotacao = 0
         self.play_pos = list()
         self.poder_cair = 6
         self.delei = 6
+        
         self.lista = list()
         self.pontos_deletado = list()
         self.ja_colidiu = False
+        self.reboot_on = False
+        
         self.cores = {2: '#FF0000', 4: '#00FF00', 6: '#0000FF', 8: '#FFFF00', 10: '#00FFFF', 12: '#E9D1A0', 14: '#FFA500'}
-        # o = obijeto numero igual a cor, p = pos x 0 y 0
+        
+        # o = Obijeto numero igual a cor, p = pos x 0 y 0
         self.obigeto = {'i': [['o2p00', 'o2p10', 'o2p20', 'o2p30'], ['o2p00', 'o2p01', 'o2p02', 'o2p03']],
                         'j': [['o4p00', 'o4p01', 'o4p11', 'o4p21'], ['o4p10', 'o4p11', 'o4p12', 'o4p02'], ['o4p00', 'o4p10', 'o4p01', 'o4p02'], ['o4p00', 'o4p10', 'o4p20', 'o4p21']],
                         'l': [['o6p01', 'o6p00', 'o6p10', 'o6p20'], ['o6p00', 'o6p01', 'o6p02', 'o6p12'], ['o6p00', 'o6p10', 'o6p11', 'o6p12'], ['o6p20', 'o6p21', 'o6p01', 'o6p11']],
@@ -25,18 +35,20 @@ class janela(ctk.CTk):
                         'z': [['o14p00', 'o14p10', 'o14p11', 'o14p21'], ['o14p10', 'o14p11', 'o14p01', 'o14p02']]
                         }
 
-        canvas = ctk.CTkCanvas(self, width=200, height=400, bg='black')
+        canvas = ctk.CTkCanvas(frame, width=200, height=400, bg='black')
         canvas.grid()
-
+        # Criando a matriz do jogo  
         self.matriz = [list(0 for i in range(0, 40)) for i in range(0, 20)]
+        
         self.tamnho_x = len(self.matriz)
         self.tamnho_y = len(self.matriz[0])
+        
         self.novo_bloco()
-        self.bind("<Key>", self.inputs)
-        self.after(2000 // 5, self.update)
+        janela.bind("<Key>", self.inputs)
+        janela.after(2000 // 5, self.update)
 
     def inputs(self, key):
-        
+        print(key.keycode)
         if key.keycode == 114 and all(x < self.tamnho_x - 1  and self.matriz[x +1 ][y] in [0, 9] for x, y in self.play_pos):
             self.limpar_tela()
             
@@ -81,7 +93,8 @@ class janela(ctk.CTk):
                 
             except IndexError:
                 pass
-
+        else:
+            frame.pack_forget()
     def cair_bloco(self):
         
         if self.play_pos == []:
@@ -109,7 +122,7 @@ class janela(ctk.CTk):
             pass
             
     def update(self):
-
+        
         canvas.delete('o')
         if not self.ja_colidiu:
             self.play_pos.clear()
@@ -170,8 +183,8 @@ class janela(ctk.CTk):
             e = int(self.obigeto[self.celecionado][0][0][1: e.find('p')])
             
             canvas.create_rectangle(x, y, x + 10, y + 10, fill=self.cores.get(e, '#FF00A2'), tags='o')
-
-        self.after(1000//60, self.update)
+        if not self.reboot_on:
+            janela.after(1000//60, self.update)
         
     def limpar_tela(self):
          contagem = 0
@@ -189,8 +202,9 @@ class janela(ctk.CTk):
         self.ja_colidiu = False
         self.limpar_tela()
         self.celecionado = ''
-        if self.matriz[10][0] not in [0, 9]:
-            print('game over')
+        if self.matriz[10][0] not in [0,9]:
+            self.reboot_on = True
+            self.reboot()
             return
         for letra in self.obigeto.keys():
             self.celecionado += letra
@@ -198,7 +212,13 @@ class janela(ctk.CTk):
         self.celecionado = choice(self.celecionado)
         for o in self.obigeto[self.celecionado][self.rotacao]:
             self.matriz[10 + int(o[-2])][int(o[-1])] = 9
-        
+            
+    def reboot(self):
+        self.reboot_on = False
+        self.__init__()
 
 if __name__ == "__main__":
-    janela().mainloop()
+    Game()
+    
+    janela.mainloop()
+    
