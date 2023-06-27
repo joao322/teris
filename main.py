@@ -179,8 +179,8 @@ class Game():
 
             x *= 10
             y *= 10
-            e = str(self.obigeto[self.celecionado][0][0])
-            e = int(self.obigeto[self.celecionado][0][0][1: e.find('p')])
+            e = int(str(self.obigeto[self.celecionado][0][0]).split("p")[0][1:])
+            
             
             canvas.create_rectangle(x, y, x + 10, y + 10, fill=self.cores.get(e, '#FF00A2'), tags='o')
         if not self.reboot_on:
